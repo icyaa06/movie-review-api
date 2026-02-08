@@ -1,134 +1,113 @@
-# 🎬 Movie Review API
-
+## Movie Review API
 ## Project Overview
-Movie Review API is a RESTful backend application built with Node.js, Express.js, and MongoDB.  
-The system allows users to register, authenticate, and create movie reviews.  
-Each review is linked to an authenticated user and contains a movie rating and comment.
 
-The project follows a modular MVC structure with proper separation of concerns.
+Movie Review API is a RESTful backend application built using Node.js, Express.js, and MongoDB.
+The application allows users to register, log in, and create movie reviews.
+Each review is associated with an authenticated user and stored securely in the database.
 
----
+The project follows a modular architecture with separate folders for routes, controllers, models, middleware, and configuration files.
 
 ## Technologies Used
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- JWT (JSON Web Tokens)
-- bcryptjs
-- Joi
-- dotenv
-- Axios
-- Postman
 
----
+Node.js
 
-## Project Structure
-movie-review-api/
-│
-├── config/
-│ └── db.js
-│
-├── controllers/
-│ ├── authController.js
-│ ├── userController.js
-│ └── reviewController.js
-│
-├── middleware/
-│ ├── authMiddleware.js
-│ └── errorMiddleware.js
-│
-├── models/
-│ ├── User.js
-│ └── Review.js
-│
-├── routes/
-│ ├── authRoutes.js
-│ ├── userRoutes.js
-│ └── reviewRoutes.js
-│
-├── validations/
-│ ├── authValidation.js
-│ └── reviewValidation.js
-│
-├── .env
-├── server.js
-└── README.md
+Express.js
 
+MongoDB Atlas
 
----
+Mongoose
 
-## Setup & Installation
+JSON Web Tokens (JWT)
 
-1️. Install dependencies
-```bash
+bcrypt
+
+Joi
+
+Render (deployment)
+
+## Setup and Installation
+1. Clone the repository
+
+Clone the project and navigate to the project folder:
+
+git clone https://github.com/your-username/movie-review-api.git
+
+cd movie-review-api
+
+2. Install dependencies
+
+Install all required packages:
+
 npm install
-2️. Environment variables
-Create a .env file in the root directory:
 
-PORT=5000
-MONGO_URI=mongodb://127.0.0.1:27017/movie_review_db
-JWT_SECRET=your_secret_key
+3. Environment variables
+
+Create a .env file in the root directory and add the following variables:
+
+PORT=10000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
 TMDB_API_KEY=your_tmdb_api_key
-3️. Run the server
-Development mode:
-npm run dev
 
-Production mode:
+4. Run the server locally
+
+Start the server:
+
 npm start
 
-Server will run on:
-http://localhost:5000
+The server will run at:
+
+http://localhost:10000
+
+## API Documentation
+-Authentication Routes (Public)
+
+POST /api/auth/register
+Registers a new user. Password is hashed before saving.
+
+POST /api/auth/login
+Authenticates the user and returns a JWT token.
+
+-User Routes (Private)
+
+GET /api/users/profile
+Returns the profile of the logged-in user.
+
+PUT /api/users/profile
+Updates the profile of the logged-in user.
+
+Authorization required:
+Authorization: Bearer <token>
+
+-Review Routes (Private)
+
+POST /api/reviews
+Creates a new movie review for the authenticated user.
+
+GET /api/reviews
+Returns all reviews created by the authenticated user.
+
+GET /api/reviews/:id
+Returns a specific review by its ID.
+
+PUT /api/reviews/:id
+Updates an existing review (only by its owner).
+
+DELETE /api/reviews/:id
+Deletes a review (only by its owner).
+
+Authorization required:
+Authorization: Bearer <token>
+
+## Deployment
+
+The backend application is deployed on Render and connected to MongoDB Atlas using environment variables.
+The deployed API has been tested using Postman and works as expected.
+
+Example deployed URL:
+
+https://movie-review-api-3134.onrender.com
 
 
-##Authentication
-Authentication is implemented using JWT.
-
-After login, the client receives a token.
-This token must be included in the request headers for protected routes:
-
-##Authorization: Bearer <token>
-
-##API Endpoints
--Authentication (Public)
-Method	Endpoint	Description
-POST	/api/auth/register	Register a new user
-POST	/api/auth/login	Login and receive JWT
--User (Private)
-Method	Endpoint	Description
-GET	/api/users/profile	Get logged-in user profile
-PUT	/api/users/profile	Update user profile
--Reviews (Private)
-Method	Endpoint	Description
-POST	/api/reviews	Create a movie review
-GET	/api/reviews	Get all user reviews
-GET	/api/reviews/:id	Get review by ID
-PUT	/api/reviews/:id	Update review
-DELETE	/api/reviews/:id	Delete review
-
-
-##External API Integration
-The project integrates The Movie Database (TMDB) API.
-
-The external API is used only to fetch movie information such as movie titles or IDs.
-Movie reviews are stored locally in MongoDB and linked to authenticated users.
-
-Example request:
-https://api.themoviedb.org/3/search/movie?api_key=YOUR_KEY&query=batman
-
-##Testing
-All API endpoints were tested using Postman, including:
--Authentication
--Authorization
--Validation
--CRUD operations
-
-##Deployment
-The backend was deployed with Render platform.
-All sensitive data is stored using environment variables.
-
-
-Author: Aisana Olzhabayeva IT-2403
-WEB2 Final Project
-Movie Review API
-
+Author
+Aisana Olzhabayeva, IT-2403
