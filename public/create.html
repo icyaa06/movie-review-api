@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Create Review</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body onload="prefillEditIfAny()">
+  <div class="container">
+    <div class="nav">
+      <b>Movie Review App</b>
+      <a href="/dashboard.html">My Reviews</a>
+      <a href="/public.html">All Reviews</a>
+      <a href="/profile.html">Profile</a>
+      <button class="secondary" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="card">
+      <h2 id="formTitle">Create Review</h2>
+
+      <div class="grid" style="max-width:700px;">
+        <input id="movieId" placeholder="Movie ID (required)" />
+        <input id="movieTitle" placeholder="Movie title" />
+        <input id="rating" type="number" min="1" max="10" value="8" />
+        <textarea id="comment" placeholder="Write your comment..." rows="5"></textarea>
+
+        <div class="row">
+          <button onclick="createOrUpdateReview()">Save</button>
+          <button class="secondary" onclick="cancelEdit()">Cancel</button>
+        </div>
+
+        <div id="msg" class="alert" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

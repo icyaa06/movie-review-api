@@ -5,10 +5,13 @@ const {
   getReviews,
   getReviewById,
   updateReview,
-  deleteReview
+  deleteReview,
+  getPublicReviews
 } = require("../controllers/reviewController");
 
 const router = express.Router();
+
+router.get("/public", getPublicReviews);
 
 router.post("/", auth, createReview);
 router.get("/", auth, getReviews);

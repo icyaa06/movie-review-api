@@ -1,81 +1,84 @@
 const Review = require("../models/Review");
 const { reviewSchema } = require("../validations/reviewValidation");
 
-// Create a new review (requires login)
-exports.createReview = async (req, res) => {
+// Create a new review (private)
+exports.createReview = async (req, res, next) => {
   try {
     const { error } = reviewSchema.validate(req.body);
     if (error) return res.status(400).json({ message: error.message });
 
     const review = await Review.create({
       ...req.body,
-      user: req.user.id,
+      user: req.user.id
     });
 
     res.status(201).json(review);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    next(err);
   }
 };
 
-// Get all reviews 
-exports.getReviews = async (req, res) => {
+// Get ALL MY reviews (private) ✅ requirement
+exports.getReviews = async (req, res, next) => {
   try {
-    // Populate user info (first and last name) for display
-    const reviews = await Review.find().populate("user", "first_name last_name");
+    const reviews = await Review.find({ user: req.user.id })
+      .sort({ createdAt: -1 })
+      .populate("user", "username");
     res.json(reviews);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    next(err);
   }
 };
 
-// Get a single review by ID
-exports.getReviewById = async (req, res) => {
+// Get one review by ID (private: only owner)
+exports.getReviewById = async (req, res, next) => {
   try {
-    const review = await Review.findById(req.params.id).populate("user", "first_name last_name");
-    if (!review) return res.status(404).json({ message: "Not found" });
+    const review = await Review.findOne({ _id: req.params.id, user: req.user.id })
+      .populate("user", "username");
 
+    if (!review) return res.status(404).json({ message: "Not found" });
     res.json(review);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    next(err);
   }
 };
 
-// Update a review (only by the author)
-exports.updateReview = async (req, res) => {
+// Update review (private: only owner)
+exports.updateReview = async (req, res, next) => {
   try {
-    const review = await Review.findById(req.params.id);
-
+    const review = await Review.findOne({ _id: req.params.id, user: req.user.id });
     if (!review) return res.status(404).json({ message: "Not found" });
-    if (review.user.toString() !== req.user.id)
-      return res.status(401).json({ message: "Not authorized" });
 
     Object.assign(review, req.body);
     await review.save();
 
     res.json(review);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    next(err);
   }
 };
 
-// Delete a review (only by the author)
-exports.deleteReview = async (req, res) => {
+// Delete review (private: only owner)
+exports.deleteReview = async (req, res, next) => {
   try {
-    const review = await Review.findById(req.params.id);
-
+    const review = await Review.findOne({ _id: req.params.id, user: req.user.id });
     if (!review) return res.status(404).json({ message: "Not found" });
-    if (review.user.toString() !== req.user.id)
-      return res.status(401).json({ message: "Not authorized" });
 
     await review.deleteOne();
     res.json({ message: "Review deleted" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    next(err);
+  }
+};
+
+// ✅ Public: see other users’ reviews (NEW, does not change existing endpoints)
+exports.getPublicReviews = async (req, res, next) => {
+  try {
+    const reviews = await Review.find()
+      .sort({ createdAt: -1 })
+      .populate("user", "username");
+    res.json(reviews);
+  } catch (err) {
+    next(err);
   }
 };

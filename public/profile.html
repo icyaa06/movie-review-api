@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Profile</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body onload="loadProfile()">
+  <div class="container">
+    <div class="nav">
+      <b>Movie Review App</b>
+      <a href="/dashboard.html">My Reviews</a>
+      <a href="/public.html">All Reviews</a>
+      <a href="/profile.html">Profile</a>
+      <button class="secondary" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="card">
+      <h2>Profile</h2>
+      <pre id="profile"></pre>
+
+      <h3>Update profile</h3>
+      <div class="row">
+        <input id="newUsername" placeholder="New username" />
+        <input id="newEmail" placeholder="New email" />
+        <button onclick="updateProfile()">Update</button>
+      </div>
+
+      <div id="pmsg" class="alert" style="display:none; margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
